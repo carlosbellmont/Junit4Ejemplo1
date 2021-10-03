@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Junit4Ejjemplo</string>
+    <string name="mainfragment">MainFragment</string>
+</resources>
