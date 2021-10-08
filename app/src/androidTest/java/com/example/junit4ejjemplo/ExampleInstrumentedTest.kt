@@ -1,7 +1,6 @@
 package com.example.junit4ejjemplo
 
 import android.content.Context
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertEquals
@@ -44,6 +43,11 @@ class ExampleInstrumentedTest {
     @Test
     fun checkApplicationNameContainsFour() {
         assert(applicationName.contains("4"))
+    }
+
+    @Test
+    fun checkApplicationNameLengthIs14() {
+        assert(applicationName.length == 14)
     }
 
 }

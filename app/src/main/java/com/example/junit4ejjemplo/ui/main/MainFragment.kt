@@ -1,12 +1,12 @@
 package com.example.junit4ejjemplo.ui.main
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.junit4ejjemplo.R
 
 class MainFragment : Fragment() {
@@ -24,6 +24,11 @@ class MainFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.isEmailValid("testerio@testeador.test")
     }
 
 }
