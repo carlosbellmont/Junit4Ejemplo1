@@ -39,4 +39,44 @@ class ExampleUnitTest {
         assertFalse(viewModel.isEmailValid("testerio@tester@testeador.test"))
     }
 
+    @Test
+    fun isPasswordValidWithValidPassword(){
+        assert(viewModel.isPasswordValid("0123456789aZ!"))
+    }
+
+    @Test
+    fun isPasswordValidTooLarge(){
+        assertFalse(viewModel.isPasswordValid("01234567890123456789aZ!"))
+    }
+
+    @Test
+    fun isPasswordValidTooShort(){
+        assertFalse(viewModel.isPasswordValid("0aZ!"))
+    }
+
+    @Test
+    fun isPasswordValidEmpty(){
+        assertFalse(viewModel.isPasswordValid(""))
+    }
+
+    @Test
+    fun isPasswordValidNoLoweCase(){
+        assertFalse(viewModel.isPasswordValid("0123456789Z!"))
+    }
+
+    @Test
+    fun isPasswordValidNoUpperCase(){
+        assertFalse(viewModel.isPasswordValid("0123456789a!"))
+    }
+
+    @Test
+    fun isPasswordValidNoSymbol(){
+        assertFalse(viewModel.isPasswordValid("0123456789aZ"))
+    }
+
+    @Test
+    fun isPasswordValidNoNumber(){
+        assertFalse(viewModel.isPasswordValid("aZ!aZ!aZ!"))
+    }
+
 }

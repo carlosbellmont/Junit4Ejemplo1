@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Junit4Ejjemplo</string>
-    <string name="mainfragment">MainFragment</string>
+    <string name="email">Insert your email</string>
+    <string name="password">Insert your password</string>
+    <string name="log_in">Log In</string>
+    <string name="snack_logged">Logged!</string>
+    <string name="snack_wrong_pass">Wrong password</string>
+    <string name="snack_wrong_email">Wrong email</string>
 </resources>
