@@ -28,7 +28,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
                 Snackbar.make(binding.root, getString(R.string.snack_wrong_email), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            if (!viewModel.isPasswordValid(binding.etEmail.text.toString())){
+            if (!viewModel.isPasswordValid(binding.etPass.text.toString())){
                 Snackbar.make(binding.root, getString(R.string.snack_wrong_pass), Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }

@@ -2,14 +2,16 @@ package com.example.junit4ejjemplo
 
 import android.content.Context
 import android.content.Intent
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import org.hamcrest.CoreMatchers.not
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
@@ -18,14 +20,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ExampleInstrumentedTest {
 
-    @get:Rule
-    var activityScenarioRule = activityScenarioRule<MainActivity>()
 
+    private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+
+    @get:Rule
+    var activityScenarioRule = activityScenarioRule<MainActivity>(intent)
 
     companion object {
 
@@ -51,7 +54,9 @@ class ExampleInstrumentedTest {
     }
 
     /**
-     * Este test lanza tu aplicación y comprueba que el nombre del paquete sea igual al esperado
+     * Este test lanza tu aplicación y comprueba que el nombre del paquete sea igual al esperado.
+     * Puede ser muy interesante en caso de que tengáis Flavours en vuestra aplicación que cambien
+     * el paquete.
      */
     @Test
     fun checkPackageName() {
@@ -76,14 +81,42 @@ class ExampleInstrumentedTest {
 
 
     @Test
-    fun checkValidEmailAndPass() {
-        //onView(withId(R.id.etEmail)).perform(click())
-        var firstActivity: IntentsTestRule<MainActivity> = IntentsTestRule(MainActivity::class.java)
-        firstActivity.launchActivity(Intent())
-
-        onView(withId(R.id.etEmail)).perform(typeText("my text"), closeSoftKeyboard())
+    fun checkValidEmailAndPass1() {
+        onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
         onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba.com"), closeSoftKeyboard())
+        onView(withId(R.id.etPass)).perform(typeText("0123456789aZ!"), closeSoftKeyboard())
+        onView(withId(R.id.bLogIn)).check(matches(isEnabled()))
+        onView(withId(R.id.bLogIn)).perform(click())
+
         onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.snack_logged)))
+    }
+
+    @Test
+    fun checkValidEmailAndPass2() {
+        onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba,com"), closeSoftKeyboard())
+        onView(withId(R.id.etPass)).perform(typeText("0123456789aZ!"), closeSoftKeyboard())
+        onView(withId(R.id.bLogIn)).check(matches(isEnabled()))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.snack_wrong_email)))
+    }
+
+    @Test
+    fun checkValidEmailAndPass3() {
+        onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba.com"), closeSoftKeyboard())
+        onView(withId(R.id.etPass)).perform(typeText("1234"), closeSoftKeyboard())
+        onView(withId(R.id.bLogIn)).check(matches(isEnabled()))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.snack_wrong_pass)))
     }
 
 }
