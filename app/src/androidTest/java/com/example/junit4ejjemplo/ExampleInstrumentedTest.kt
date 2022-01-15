@@ -10,7 +10,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.CoreMatchers.not
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
@@ -23,7 +22,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ExampleInstrumentedTest {
-
 
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
@@ -39,7 +37,7 @@ class ExampleInstrumentedTest {
         @BeforeClass
         @JvmStatic
         fun initVariables() {
-            appContext = InstrumentationRegistry.getInstrumentation().targetContext
+            appContext = ApplicationProvider.getApplicationContext()//InstrumentationRegistry.getInstrumentation().targetContext
             applicationName = appContext.resources.getString(R.string.app_name)
             startingTime = System.currentTimeMillis()
 
@@ -51,6 +49,8 @@ class ExampleInstrumentedTest {
         fun showTotalTime() {
             println("The unit test were executed in ${System.currentTimeMillis() - startingTime} ")
         }
+
+
     }
 
     /**
@@ -79,11 +79,9 @@ class ExampleInstrumentedTest {
         assert(applicationName.length == 14)
     }
 
-
     @Test
-    fun checkValidEmailAndPass1() {
+    fun checkSnackBarWithValidEmailValidPass(){
         onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
-        onView(withId(R.id.bLogIn)).perform(click())
 
         onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba.com"), closeSoftKeyboard())
         onView(withId(R.id.etPass)).perform(typeText("0123456789aZ!"), closeSoftKeyboard())
@@ -94,9 +92,8 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun checkValidEmailAndPass2() {
+    fun checkSnackBarWithInvalidEmailValidPass() {
         onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
-        onView(withId(R.id.bLogIn)).perform(click())
 
         onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba,com"), closeSoftKeyboard())
         onView(withId(R.id.etPass)).perform(typeText("0123456789aZ!"), closeSoftKeyboard())
@@ -107,9 +104,8 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun checkValidEmailAndPass3() {
+    fun checkSnackBarWithValidEmailInvalidPass() {
         onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
-        onView(withId(R.id.bLogIn)).perform(click())
 
         onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba.com"), closeSoftKeyboard())
         onView(withId(R.id.etPass)).perform(typeText("1234"), closeSoftKeyboard())
@@ -119,4 +115,45 @@ class ExampleInstrumentedTest {
         onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.snack_wrong_pass)))
     }
 
+    @Test
+    fun checkSnackBarWithInvalidEmailInvalidPass() {
+        onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
+
+        onView(withId(R.id.etEmail)).perform(typeText("prueba@prueba,com"), closeSoftKeyboard())
+        onView(withId(R.id.etPass)).perform(typeText("1234"), closeSoftKeyboard())
+        onView(withId(R.id.bLogIn)).check(matches(isEnabled()))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(R.string.snack_wrong_email)))
+    }
+
+    @Test
+    fun checkSnackBar() {
+        checkSnackBarResult("prueba@prueba.com", "0123456789aZ!", appContext.getString(R.string.snack_logged))
+        limpiarEditText()
+        checkSnackBarResult("prueba@prueba,com", "1234", appContext.getString(R.string.snack_wrong_email))
+        limpiarEditText()
+        checkSnackBarResult("prueba@prueba.com", "1234", appContext.getString(R.string.snack_wrong_pass))
+        limpiarEditText()
+        checkSnackBarResult("prueba@prueba,com", "0123456789aZ!", appContext.getString(R.string.snack_wrong_email))
+        limpiarEditText()
+    }
+
+
+    private fun checkSnackBarResult(email: String, password: String, expectedResult: String) {
+        onView(withId(R.id.bLogIn)).check(matches(not(isEnabled())))
+
+        onView(withId(R.id.etEmail)).perform(typeText(email), closeSoftKeyboard())
+        onView(withId(R.id.etPass)).perform(typeText(password), closeSoftKeyboard())
+        onView(withId(R.id.bLogIn)).check(matches(isEnabled()))
+        onView(withId(R.id.bLogIn)).perform(click())
+
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText(expectedResult)))
+
+    }
+
+    private fun limpiarEditText() {
+        onView(withId(R.id.etEmail)).perform(clearText())
+        onView(withId(R.id.etPass)).perform(clearText())
+    }
 }
