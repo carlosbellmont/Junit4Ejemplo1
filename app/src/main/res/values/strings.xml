@@ -6,4 +6,6 @@
     <string name="snack_logged">Logged!</string>
     <string name="snack_wrong_pass">Wrong password</string>
     <string name="snack_wrong_email">Wrong email</string>
+    <string name="at">\@</string>
+    <string name="dot">.</string>
 </resources>

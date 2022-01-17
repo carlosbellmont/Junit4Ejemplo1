@@ -1,15 +1,18 @@
 package com.example.junit4ejjemplo
 
-import com.example.junit4ejjemplo.ui.main.MainViewModel
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.junit4ejjemplo.ui.main.MainAndroidViewModel
 import org.junit.AfterClass
-import org.junit.Assert.assertFalse
+import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
+class MainAndroidViewModelTest {
 
-class ExampleUnitTest {
-
-    private var viewModel = MainViewModel()
+    private var viewModel = MainAndroidViewModel(ApplicationProvider.getApplicationContext())
 
 
     companion object {
@@ -30,7 +33,7 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun `testing isValidEmail with correct values`(){
+    fun isEmailValid() {
         val correctValues = arrayOf(
             "testerio@testeador.test",
             "Testerio1@testeador.test",
@@ -38,35 +41,26 @@ class ExampleUnitTest {
             "testerio.tester@testeador.test"
         )
         correctValues.forEach { email ->
-            assert(viewModel.isEmailValid(email))
+            assert(viewModel.isEmailValidUsingContext(email))
         }
-    }
-
-    @Test
-    fun `testing isValidEmail with wrong values`(){
         val wrongValues = arrayListOf(
             "testerio@testeador,test", // no dot
             "testeriotesteador.test", // no @
             "testerio@tester@testeador.test" // Double @@
         )
         wrongValues.forEach { email ->
-            assertFalse(viewModel.isEmailValid(email))
+            Assert.assertFalse(viewModel.isEmailValidUsingContext(email))
         }
     }
 
-
     @Test
-    fun `testing isValidPassword with correct values`(){
+    fun isPasswordValid() {
         val correctValues = arrayOf(
             "0123456789aZ!",
         )
         correctValues.forEach { email ->
-            assert(viewModel.isPasswordValid(email))
+            assert(viewModel.isPasswordValidUsingContext(email))
         }
-    }
-
-    @Test
-    fun `testing isValidPassword with wrong values`(){
         val wrongValues = arrayListOf(
             "01234567890123456789aZ!", // too large
             "0aZ!", // too short
@@ -77,8 +71,7 @@ class ExampleUnitTest {
             "aZ!aZ!aZ!", // no number
         )
         wrongValues.forEach { email ->
-            assertFalse(viewModel.isEmailValid(email))
+            Assert.assertFalse(viewModel.isEmailValidUsingContext(email))
         }
     }
-
 }
