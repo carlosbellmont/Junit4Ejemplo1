@@ -1,11 +1,10 @@
 package com.example.junit4ejjemplo.ui.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.junit4ejjemplo.R
 import com.example.junit4ejjemplo.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
@@ -16,7 +15,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: MainFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,11 +41,4 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         }
 
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-    }
-
-
 }
