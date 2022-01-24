@@ -39,6 +39,5 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         binding.etPass.doAfterTextChanged {
             binding.bLogIn.isEnabled = binding.etEmail.text.isNotEmpty() && binding.etPass.text.isNotEmpty()
         }
-
     }
 }

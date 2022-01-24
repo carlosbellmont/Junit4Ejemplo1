@@ -26,8 +26,8 @@ class MainViewModelTest {
         fun showTotalTime() {
             println("The unit test were executed in ${System.currentTimeMillis() - startingTime} ")
         }
-
     }
+
 
 
     @Test
@@ -78,7 +78,24 @@ class MainViewModelTest {
             "aZ!aZ!aZ!", // no number
         )
         wrongValues.forEach { email ->
-            assertFalse(viewModel.isEmailValid(email))
+            assertFalse(viewModel.isPasswordValid(email))
+        }
+    }
+
+
+    @Test
+    fun comprobarContrasena(){
+        val wrongValues = arrayListOf(
+            "01234567890123456789aZ!", // too large
+            "0aZ!", // too short
+            "", // Empty
+            "0123456789Z!", // no lower case
+            "0123456789a!", // no upper case
+            "0123456789aZ", // no symbol
+            "aZ!aZ!aZ!", // no number
+        )
+        wrongValues.forEach { pass ->
+            assertFalse(viewModel.isPasswordValid(pass))
         }
     }
 
