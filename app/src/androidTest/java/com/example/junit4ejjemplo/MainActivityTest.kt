@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class ExampleInstrumentedTest {
+class MainActivityTest {
 
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
