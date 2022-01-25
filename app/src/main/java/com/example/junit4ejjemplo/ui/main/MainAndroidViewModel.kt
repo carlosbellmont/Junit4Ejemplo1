@@ -12,7 +12,7 @@ class MainAndroidViewModel(private val applicationContext: Application) : Androi
         val at = applicationContext.getString(R.string.at)
         val dot = applicationContext.getString(R.string.dot)
 
-        return possibleEmail.contains(at) && possibleEmail.contains(dot) && (possibleEmail.count { it == at[0] } == 1)
+        return possibleEmail.contains(dot) && (possibleEmail.count { it == at[0] } == 1)
     }
 
     fun isPasswordValidUsingContext(possiblePassword: String): Boolean {
